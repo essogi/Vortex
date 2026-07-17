@@ -1,0 +1,13 @@
+diff --git a/TOTAL2.68K b/TOTAL2.68K
+index f2ed1b3..a18dba4 100644
+--- a/TOTAL2.68K
++++ b/TOTAL2.68K
+@@ -3002,7 +3002,7 @@ Flash_Dead:
+ 	move.b	#-2,SPR.Gere_Continue(a5)
+ 
+ .n34:	clr.b	SPR.Play_Stun(a5)
+-	clr.b	SPR.Stun_Type(a5)
++	;clr.b	SPR.Stun_Type(a5) ;Related to double hit death Red Guy Bug
+ 
+ 	tst.w	SPR.Type(a5)
+ 	beq.s	Flash_Dead_Joueur

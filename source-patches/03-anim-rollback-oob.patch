@@ -1,0 +1,23 @@
+diff --git a/ROUTANIM.68K b/ROUTANIM.68K
+index e06cab5..20b9cf4 100644
+--- a/ROUTANIM.68K
++++ b/ROUTANIM.68K
+@@ -3710,11 +3710,17 @@ RA_Test_Consommation:
+ .perte_en_pdv:
+ 	ext.w	d3
+ 	cmp.w	SPR.Energy(a5),d3
+-	bge.s	.annuler_coup
++	bge.s	.check_joueur1
+ .rts:	rts
+ 
+ 	;-----------------------------------------------------------------
+ 
++.check_joueur1:
++	cmpa.l	#SPR.Joueur1,a5 ; if check if not player 1
++	beq.b	.annuler_coup
++.check_joueur2:
++	cmpa.l	#SPR.Joueur2,a5 ; if check if not player 2
++	bne.b	.rts
+ .annuler_coup:
+ 	move.w	SPR.Code(a5),d3
+ 	lsl.w	#3,d3

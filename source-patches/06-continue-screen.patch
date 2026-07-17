@@ -1,0 +1,37 @@
+diff --git a/TOTAL2.68K b/TOTAL2.68K
+index 315610d..56bc7f0 100644
+--- a/TOTAL2.68K
++++ b/TOTAL2.68K
+@@ -18216,6 +18216,13 @@ Vie: 	tst.w	SPR.Energy_To_Add(a5)
+ 	bne.s	.continue
+ 	not.b	Flag_GameOver
+ .continue:
++	tst.b	(PPT.Cont_Cool)
++	beq.s	.timeshow
++	subq.b	#1,(PPT.Cont_Cool)
++	rts
++.timeshow:
++	move.b	#-2,SPR.Gere_Continue(a5) ; BUG - Missing Continue screen, will this fix?
++	move.b	#127,(PPT.Cont_Cool)
+ 	rts
+ 
+ 	;========================================
+@@ -23632,6 +23639,8 @@ o_pan:  dc.w 176,%0000111100000001	; 1
+ 
+ NewLevel:
+ 	clr.w	(Tremble_Mono) ; added to eliminate stuck shaking variable from monorail (pizzapartytime)
++	move.b	#127,(PPT.Cont_Cool) ; Red Guy Bug Fix
++
+ 	move.l	#rts,Current_Vbl
+ 
+ 	moveq	#2-1,d4
+@@ -43965,6 +43974,9 @@ NAN.Lateral_Duree: 	ds.b 1
+ 			ds.b 1
+ 
+ ;Nano_Bez_Infos:	ds.b BEZ_LENGHT
++;My Vars pizzapartytime
++PPT.Cont_Cool:	ds.b 1
++	EVEN
+ 
+ RAM_End_To_Clean:
+ 

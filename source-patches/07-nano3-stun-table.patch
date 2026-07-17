@@ -1,0 +1,13 @@
+diff --git a/COUPS.68K b/COUPS.68K
+index 5ca4c53..312d0b8 100644
+--- a/COUPS.68K
++++ b/COUPS.68K
+@@ -11876,7 +11876,7 @@ Fiche.Nano3:	ifne tst_nano3
+ 		dc.b 0
+ 		dc.b 5
+ 		dc.l 0
+-		dc.l 0
++		dc.l Ennemi.Tbl_Stunned ; BUG - the lack of stun table was crashing game
+ 		dc.b 3
+ 		dc.b 0
+ 		dc.w Nb_Frames_Nano3

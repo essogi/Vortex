@@ -1,0 +1,595 @@
+diff --git a/TOTAL2.68K b/TOTAL2.68K
+index f2ed1b3..a9f5cf1 100644
+--- a/TOTAL2.68K
++++ b/TOTAL2.68K
+@@ -1,3 +1,6 @@
++	include "c:\travaux\megadrv\vortex2\Macros - More CPUs.asm"
++	cpu 68000
++
+ ;============================================================================
+ ;
+ ; OUT OF THE VORTEX "2"        *=*=*=* BEAT THEM ALL VERSION *=*=*=*
+@@ -14,9 +17,9 @@
+ 
+ 	include "c:\travaux\megadrv\vortex2\Vars_Equ.68K"
+ 	IFNE Debug
+-	REGS PC=START_PC,SR=$2000
++;	REGS PC=START_PC,SR=$2000
+ 	ELSE
+-	REGS PC=START_PC,SR=$2700
++;	REGS PC=START_PC,SR=$2700
+ 	ENDC
+ 	include "c:\travaux\megadrv\vortex2\Header.68k"
+ 
+@@ -558,7 +561,7 @@ Anim_Over:
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+ 
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -2229,7 +2232,7 @@ Gestion_des_Objets:
+ 	move.b	(a0)+,SPR.Frame(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -2493,7 +2496,7 @@ init_stun:
+ 	cmpi.b	#32,SPR.Stun_Type(a5)   ; -
+ 	beq.s	.devant                 ; -
+ 	bra.s	.prout                  ; -
+-.devant:addq.w	#1,SPR.Centre_Y(a5)     ; -
++.devant: addq.w	#1,SPR.Centre_Y(a5)     ; -
+ 
+ .prout:	move.b	#$ff,SPR.Etat_Joy(a5)
+ 	move.b	#$ff,SPR.Old_Joy(a5)
+@@ -2610,7 +2613,7 @@ Play_Stunned:
+ 	bsr	Set_Note
+ 	bra.s	.s
+ 
+-.replay:addq.w	#1,a0
++.replay: addq.w	#1,a0
+ 
+ .s:	moveq	#0,d1
+ 	moveq	#0,d2
+@@ -3153,7 +3156,7 @@ Afficher_Logo_Go:
+ 	move.b	(a0)+,SPR.Frame(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -5168,10 +5171,10 @@ Normale:
+ 	jmp	(a0)
+ 
+ .mul_par_20:
+-i set 0
++i = 0
+ 	REPT 58
+ 	dc.w 20*I
+-i set i+1
++i = i+1
+ 	ENDR
+ 
+ 	REPT 58
+@@ -9219,7 +9222,7 @@ SD_Rdv:	tst.b	SPR.Delai_Petite_Forme(a5)      ;
+ 	add.w	SPR.Hauteur_Saut(a4),d3
+ 	bra.s	.juju
+ 
+-.manuel:add.w	Centre_Manuel_X,d2
++.manuel: add.w	Centre_Manuel_X,d2
+ 	add.w	Centre_Manuel_Y,d3
+ 
+ .juju:	lea	SPR.Dest_X(a5),a0
+@@ -10655,7 +10658,7 @@ zzc:	equ 1
+ 	tst.b	SPR.Dr_Init(a5)
+ 	bne.s	.play
+    	move.l	d0,SPR.Z(a5)
+-	clr.l	SPR.W(a5)
++	clr.l	SPR.Y(a5)
+ 	move.b	#-1,SPR.Dr_Init(a5)
+ 
+ .play:  tst.b	SPR.I(a5)
+@@ -10665,7 +10668,7 @@ zzc:	equ 1
+ 
+ Cas_x:	move.l	SPR.Speed_X(a5),d4
+ 
+-	addq.w	#1,SPR.W(a5)
++	addq.w	#1,SPR.Y(a5)
+ 
+ 	tst.b	SPR.Fx(a5)
+ 	bpl.s	.cx
+@@ -10679,7 +10682,7 @@ Cas_x:	move.l	SPR.Speed_X(a5),d4
+ 	move.b	d0,SPR.Code_Recul(a5)	;
+ 	bsr	Traitement_du_Recul     ;
+ 
+-.go:	move.l	SPR.W(a5),d4
++.go:	move.l	SPR.Y(a5),d4
+ 	cmp.l   SPR.Z(a5),d4
+ 	blt.s	.gg
+ 	move.l	SPR.C(a5),d4
+@@ -10712,9 +10715,9 @@ Cas_y:	move.l	SPR.Speed_Y(a5),d4
+ 	moveq	#0,d0			;
+ 	move.b	SPR.Code_Recul(a5),d0	;
+ 	bsr	Traitement_du_Recul     ;
+-.vx:	addq.w	#1,SPR.W(a5)
++.vx:	addq.w	#1,SPR.Y(a5)
+ 
+-	move.l	SPR.W(a5),d4
++	move.l	SPR.Y(a5),d4
+ 	cmp.l   SPR.Z(a5),d4
+ 	blt.s	.gg
+ 	move.l	SPR.C(a5),d4
+@@ -11691,9 +11694,8 @@ Initialisation_Decor:
+ 	move.l	d0,(a1)+
+ 	dbf	d1,.lu2
+ 
+-.copy:	TO_VRAM_Copy.l 	#Unpack_Buffer,\ 	; Map du Scroll A
+-			#VRAM.Scroll.A.Map,\
+-			#128*32*2+2
++.copy:	TO_VRAM_Copy.l 	#Unpack_Buffer,#VRAM.Scroll.A.Map,#128*32*2+2
++	; Map du Scroll A
+ 
+ 	;lea	Unpack_Buffer,a2
+  	;lea	VRAM.Scroll.A.Map,a0
+@@ -11764,9 +11766,7 @@ Initialisation_Decor:
+ 	move.l	d0,(a1)+
+ 	dbf	d1,.lv
+ 
+-.copyb:	TO_VRAM_Copy.l  #Unpack_Buffer,\
+-			#VRAM.Scroll.B.Map,\
+-			#128*32*2+2
++.copyb:	TO_VRAM_Copy.l  #Unpack_Buffer,#VRAM.Scroll.B.Map,#128*32*2+2
+ 
+ 	;lea	Unpack_Buffer,a2
+ 	;lea	VRAM.Scroll.B.Map,a0
+@@ -11781,9 +11781,7 @@ Initialisation_Decor:
+ 
+ 	lsl.w	#5,d6
+ 	addq.w	#2,d6
+-	TO_VRAM_Copy.l  #Unpack_Buffer,\
+-			#VRAM.Blk.Decor,\
+-			d6
++	TO_VRAM_Copy.l  #Unpack_Buffer,#VRAM.Blk.Decor,d6
+ 
+ 	;lea	Unpack_Buffer,a2
+  	;lea	VRAM.Blk.Decor,a0
+@@ -11804,9 +11802,7 @@ Initialisation_Decor:
+ 	move.l	(a5)+,a0
+ 	lsl.w	#5,d7
+ 	addq.w	#2,d7
+-	TO_VRAM_Copy.l  #Unpack_Buffer,\
+-			a0,\
+-			d7
++	TO_VRAM_Copy.l  #Unpack_Buffer,a0,d7
+ 
+ 	;lea	Unpack_Buffer,a2
+ 	;lsr.w	#1,d7
+@@ -18921,13 +18917,11 @@ Initialisation_Page:
+ 	move.l	d0,(a1)+
+ 	dbf	d1,.lu
+ 
+-	TO_VRAM_Copy.l 	#Unpack_Buffer,\ 		; Map du Scroll A
+-			#VRAM.Scroll.A.Map,\
+-			#128*32*2+2
++	TO_VRAM_Copy.l 	#Unpack_Buffer,#VRAM.Scroll.A.Map,#128*32*2+2
++	; Map du Scroll A
+ 
+-	TO_VRAM_Copy.l  #Unpack_Buffer,\          	; Map idem dans Scroll B
+-			#VRAM.Scroll.B.Map,\
+-			#128*32*2+2
++	TO_VRAM_Copy.l  #Unpack_Buffer,#VRAM.Scroll.B.Map,#128*32*2+2
++	; Map idem dans Scroll B
+ 
+ 	; ===== Copier les Blocs de la Page =====
+ 
+@@ -18937,9 +18931,7 @@ Initialisation_Page:
+ 
+ 	lsl.w	#5,d6
+ 	addq.w	#2,d6
+-	TO_VRAM_Copy.l  #Unpack_Buffer,\
+-			#VRAM.Blk.Decor,\
+-			d6
++	TO_VRAM_Copy.l  #Unpack_Buffer,#VRAM.Blk.Decor,d6
+ 	move.w	(a5)+,4(a6)
+ 	move.b	(a5)+,Quantity_Scroll
+ 	rts
+@@ -19125,9 +19117,8 @@ Initialisation_Page_AB:
+ .rin0:	move.l	d0,(a1)+
+ 	dbf	d1,.lu
+ 
+-	TO_VRAM_Copy.l 	#Unpack_Buffer,\ 		; Map du Scroll A
+-			#VRAM.Scroll.A.Map,\
+-			#8192
++	TO_VRAM_Copy.l 	#Unpack_Buffer,#VRAM.Scroll.A.Map,#8192
++	; Map du Scroll A
+ 
+ 	; ===== Copier les Blocs du Scroll A =====
+ 
+@@ -19142,9 +19133,7 @@ Initialisation_Page_AB:
+ 	move.w	Base_NUM_BLK_Decor,d2
+ 	lsl.w	#5,d2
+ 
+-	TO_VRAM_Copy.l  #Unpack_Buffer,\
+-			d2,\
+-			d6
++	TO_VRAM_Copy.l  #Unpack_Buffer,d2,d6
+ 	move.w	(sp)+,d6
+ 
+ 	; ===== Copier la Map du Scroll B =====
+@@ -19168,9 +19157,8 @@ Initialisation_Page_AB:
+ .rin1:	move.l	d0,(a1)+
+ 	dbf	d1,.luc
+ 
+-	TO_VRAM_Copy.l 	#Unpack_Buffer,\ 		; Map du Scroll B
+-			#VRAM.Scroll.B.Map,\
+-			#8192
++	TO_VRAM_Copy.l 	#Unpack_Buffer,#VRAM.Scroll.B.Map,#8192
++	; Map du Scroll B
+ 
+ 	;lea	Unpack_Buffer,a2
+ 	;lea	VRAM.Scroll.B.Map,a0
+@@ -19194,9 +19182,7 @@ Initialisation_Page_AB:
+ 	lsl.w	#5,d7
+ 	addq.w	#2,d7
+ 
+-	TO_VRAM_Copy.l  #Unpack_Buffer,\
+-			a0,\
+-			d7
++	TO_VRAM_Copy.l  #Unpack_Buffer,a0,d7
+ 
+ 	;lea	Unpack_Buffer,a2
+ 	;lsr.w	#1,d7
+@@ -22802,7 +22788,7 @@ Street_Intro:
+ 	move.b	(a0)+,SPR.Frame(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.rset
+ 
+@@ -23681,7 +23667,7 @@ NewLevel:
+ 
+ 	moveq	#-1,d7			; nø du level
+ 
+-.search:addq.w	#1,d7
++.search: addq.w	#1,d7
+ 	movem.l	(a4)+,a0/a1/a2/a3
+ 	cmpi.l	#-1,a0
+ 	beq.w	.bye
+@@ -27467,7 +27453,7 @@ Vbl_Selector:
+ 	move.b	(a0)+,SPR.Frame(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -42885,7 +42871,7 @@ Col.Mace:		incbin "C:\TRAVAUX\MEGADRV\VORTEX2\COLLIS.CMG\mace.Cmg"
+ 			endc
+ 
+ 			ifne tst_DeadLight
+-Col.DeadLight:		incbin "C:\TRAVAUX\MEGADRV\VORTEX2\COLLIS.CMG\DeadLight.Cmg"
++Col.DeadLight:		incbin "C:\TRAVAUX\MEGADRV\VORTEX2\COLLIS.CMG\DeadLigh.Cmg"
+ 			endc
+ 
+ 			ifne tst_Ignition
+@@ -43532,7 +43518,8 @@ FIN_PRG:
+ ; Variables de la Work RAM
+ ;============================================================================
+ 
+-			ORG     $ffff0000
++;			ORG     $ffff0000
++	OBJ	$ffff0000
+ 
+ StackBottom:            ds.b 900        ; Place pour
+ StackTop:               ds.l 1          ; les piles !
+@@ -43967,6 +43954,7 @@ NAN.Lateral_Duree: 	ds.b 1
+ 
+ RAM_End_To_Clean:
+ 
++OBJEND
+ ;============================================================================
+ 	END
+ ;============================================================================
+diff --git a/HEADER.68K b/HEADER.68K
+index a8d51d1..6ce1be0 100644
+--- a/HEADER.68K
++++ b/HEADER.68K
+@@ -4,13 +4,13 @@
+ 
+ 	opt l+      ; loacal label character = .
+ 	opt w+      ; give warnings messages
+-	opt op+     ; PC relative addressing wherever possible and legal
+-	opt os+     ; short branch optimisation
+-	opt ow+     ; absolute word optimisation
+-	opt oz+     ; zero displacement optimisation
+-	opt omq+    ; quick move optimisation
++;	opt op+     ; PC relative addressing wherever possible and legal
++;	opt os+     ; short branch optimisation
++;	opt ow+     ; absolute word optimisation
++;	opt oz+     ; zero displacement optimisation
++;	opt omq+    ; quick move optimisation
+ ;	opt oaq+    ; quick addition optimisation
+-	opt osq+    ; quick substraction optimisation
++;	opt osq+    ; quick substraction optimisation
+ 
+ ;============================================================================
+ ; Equivalences Hardware...
+@@ -331,7 +331,7 @@ SPR.Dr_Init:		rs.b 1
+ SPR.Attaque_en_Cours:	rs.b 1
+ SPR.Deplace_en_Cours:	rs.b 1
+ 
+-SPR.W:			rs.l 1
++SPR.Y:			rs.l 1
+ SPR.Z:			rs.l 1
+ SPR.C:			rs.l 1
+ SPR.Fx:			rs.b 1
+@@ -1404,9 +1404,9 @@ BLK.Anim_Obj_Axe:  	incbin "C:\TRAVAUX\MEGADRV\VORTEX2\ANIMS.MGD\Obj_Axe.rnc"
+ 
+ 			; ======== DIVERS ========
+ 
+-INF.Anim_Explosion:   	incbin "C:\TRAVAUX\MEGADRV\VORTEX2\ANIMS.MGD\Explosion.inf"
++INF.Anim_Explosion:   	incbin "C:\TRAVAUX\MEGADRV\VORTEX2\ANIMS.MGD\Explosio.inf"
+ 			EVEN
+-BLK.Anim_Explosion:   	incbin "C:\TRAVAUX\MEGADRV\VORTEX2\ANIMS.MGD\Explosion.rnc"
++BLK.Anim_Explosion:   	incbin "C:\TRAVAUX\MEGADRV\VORTEX2\ANIMS.MGD\Explosio.rnc"
+ 			EVEN
+ INF.Anim_Bal_Mecha:    	incbin "C:\TRAVAUX\MEGADRV\VORTEX2\ANIMS.MGD\Ba_Mecha.inf"
+ 			EVEN
+diff --git a/ROUTANIM.68K b/ROUTANIM.68K
+index e06cab5..e47cdc9 100644
+--- a/ROUTANIM.68K
++++ b/ROUTANIM.68K
+@@ -1632,7 +1632,7 @@ RA_Play_Null:
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+ 
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+ 	clr.w	SPR.Hauteur_Saut(a5)
+@@ -1791,7 +1791,7 @@ RA_Play_01:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1814,7 +1814,7 @@ RA_Play_02:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1837,7 +1837,7 @@ RA_Play_03:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1860,7 +1860,7 @@ RA_Play_04:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1884,7 +1884,7 @@ RA_Play_05:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1908,7 +1908,7 @@ RA_Play_06:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1932,7 +1932,7 @@ RA_Play_07:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1955,7 +1955,7 @@ RA_Play_08:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -1989,7 +1989,7 @@ RA_Play_09:
+ 
+ .z:	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -2816,7 +2816,7 @@ RA_Play_14:
+ .rrr:	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+ 	move.b	SPR.Frame_de_Saisie(a5),SPR.Frame(a5)
+ 	move.w	#1,SPR.Ok_Trans(a5)
+@@ -2943,7 +2943,7 @@ RA_Play_17:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+ 	move.b	#20,SPR.Wait_Prise(a5)
+@@ -2976,7 +2976,7 @@ RA_Play_18:
+ .ff:	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	jsr	Routanim_Desaisie_Forcee
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+@@ -3010,7 +3010,7 @@ RA_Play_19:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.b	#1,SPR.Repetition_Action(a5)
++.boucle: addq.b	#1,SPR.Repetition_Action(a5)
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+ 	addq.w	#1,a0
+ 	move.l	(a0),a0
+@@ -3048,7 +3048,7 @@ RA_Play_21:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3083,7 +3083,7 @@ RA_Play_22:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+ 	bra.s	.reset
+@@ -3121,7 +3121,7 @@ RA_Play_23:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3156,7 +3156,7 @@ RA_Play_24:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3192,7 +3192,7 @@ RA_Play_25:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3227,7 +3227,7 @@ RA_Play_26:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3263,7 +3263,7 @@ RA_Play_27:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3299,7 +3299,7 @@ RA_Play_28:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3335,7 +3335,7 @@ RA_Play_29:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3372,7 +3372,7 @@ RA_Play_30:
+ 	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	bra.s	.reset
+ 
+@@ -3457,7 +3457,7 @@ RA_Play_34:
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+ 
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 
+ 	move.w	SPR.Original_Start_Bloc(a5),SPR.Start_Bloc(a5)
+@@ -3611,7 +3611,7 @@ RA_Play_37:
+ .rt:	move.w	#-1,SPR.Ok_Trans(a5)
+ 	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+-.boucle:addq.w	#1,a0
++.boucle: addq.w	#1,a0
+ 	move.l	(a0),a0
+ 	clr.b	SPR.Rout_Fin_Anim(a5)
+ 	bra.w	.reset
+@@ -3648,7 +3648,7 @@ RA_Play_38:
+ .kiki:	move.l	a0,SPR.Frame_Pos_Seq(a5)
+ .rts:  	rts
+ 
+-.boucle:addq.b	#1,SPR.Frame_Lancer(a5)
++.boucle: addq.b	#1,SPR.Frame_Lancer(a5)
+ 	cmpi.b	#4,SPR.Frame_Lancer(a5)
+ 	beq.s	.end
+ 	cmpi.b	#3,SPR.Frame_Lancer(a5)

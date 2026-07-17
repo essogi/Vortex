@@ -1,0 +1,146 @@
+diff --git a/HEADER.68K b/HEADER.68K
+index a8d51d1..6fe9bf0 100644
+--- a/HEADER.68K
++++ b/HEADER.68K
+@@ -604,27 +604,50 @@ SCSIExcept:	EQU $20800C   ; ...
+         dc.l    StackTop    ; Supervisor stack pointer
+         dc.l    START_PC    ; PC
+ 
+-	IFNE	Debug
+-
+-        dc.l    $02<<24+SCSIExcept
+-        dc.l    $03<<24+SCSIExcept
+-        dc.l    $04<<24+SCSIExcept
+-        dc.l    $05<<24+SCSIExcept
+-        dc.l    $06<<24+SCSIExcept
+-        dc.l    $07<<24+SCSIExcept
+-        dc.l    $08<<24+SCSIExcept
+-        dc.l    $09<<24+SCSIExcept
++;	IFNE	Debug
++;
++;        dc.l    $02<<24+SCSIExcept
++;        dc.l    $03<<24+SCSIExcept
++;        dc.l    $04<<24+SCSIExcept
++;        dc.l    $05<<24+SCSIExcept
++;        dc.l    $06<<24+SCSIExcept
++;        dc.l    $07<<24+SCSIExcept
++;        dc.l    $08<<24+SCSIExcept
++;        dc.l    $09<<24+SCSIExcept
++;	ELSE
++;
++;        dc.l    rte     	; 02 = Bus error
++;        dc.l    rte     	; 03 = Address error
++;        dc.l    rte			; 04 = Illegal instruction
++;        dc.l    rte     	; 05 = Divide by zero
++;        dc.l    rte     	; 06 = CHK instruction
++;        dc.l    rte    		; 07 = TrapV instruction
++;        dc.l   	rte     	 ; 08 = Privilege instruction
++;        dc.l    rte			; 09 = Trace instruction
++;	
++;	ENDIF
++
++	IFNE	Pizza_Debug
++
++        dc.l    Bus_Trap     		; 02 = Bus error
++        dc.l    Address_Trap     	; 03 = Address error
++        dc.l    Instruction_Trap	; 04 = Illegal instruction
++        dc.l    Zero_Trap     		; 05 = Divide by zero
++        dc.l    CHK_Trap     		; 06 = CHK instruction
++        dc.l    TrapV     			; 07 = TrapV instruction
++        dc.l   	Privilege_Trap      ; 08 = Privilege instruction
++        dc.l    Trace_Trap			; 09 = Trace instruction
+ 
+ 	ELSE
+ 
+-        dc.l    rte     ; 02 = Bus error
+-        dc.l    rte     ; 03 = Address error
+-        dc.l    rte	; 04 = Illegal instruction
+-        dc.l    rte     ; 05 = Divide by zero
+-        dc.l    rte     ; 06 = CHK instruction
+-        dc.l    rte     ; 07 = TrapV instruction
+-        dc.l    rte     ; 08 = Privilege instruction
+-        dc.l    rte	; 09 = Trace instruction
++        dc.l    rte    	; 02 = Bus error
++        dc.l    rte    	; 03 = Address error
++        dc.l    rte		; 04 = Illegal instruction
++        dc.l    rte		; 05 = Divide by zero
++        dc.l    rte		; 06 = CHK instruction
++        dc.l    rte  	; 07 = TrapV instruction
++        dc.l   	rte     ; 08 = Privilege instruction
++        dc.l    rte		; 09 = Trace instruction
+ 
+ 	ENDIF
+ 
+@@ -892,7 +915,7 @@ chk_vdp:tst     $c00004
+ ; D‚but du Programme
+ ;============================================================================
+ 
+-		ifeq	DEBUG
++		ifne	DEBUG
+ ICD_END:	include "c:\travaux\megadrv\vortex2\lock.a"
+ 		endif
+ 
+diff --git a/TOTAL2.68K b/TOTAL2.68K
+index f2ed1b3..eb24f62 100644
+--- a/TOTAL2.68K
++++ b/TOTAL2.68K
+@@ -4296,6 +4296,36 @@ Vbl_Game:
+ 
+ .rts:	rts
+ 
++;============================================================================
++;pizzapartytime - Debugging Trap Labels
++;===========================================================================
++	IFNE	Pizza_Debug
++
++Bus_Trap:     		; 02 = Bus error
++	jmp Bus_Trap
++	
++Address_Trap:	; 03 = Address error
++	jmp Address_Trap
++
++Instruction_Trap: ; 04 = Illegal instruction
++	jmp Instruction_Trap
++
++Zero_Trap: ; 05 = Divide by zero
++	jmp Zero_Trap
++
++CHK_Trap: ; 06 = CHK instruction
++	jmp CHK_Trap     		
++
++TrapV: ; Trap 5 5 5 5 5 5 ;)
++	jmp TrapV
++
++Privilege_Trap: ; Privileged Instruction Trap
++	jmp Privilege_Trap
++
++Trace_Trap: ; Trace Instruction Trap
++	jmp Trace_Trap
++
++	ENDC
+ ;============================================================================
+ ;
+ ;============================================================================
+diff --git a/VARS_EQU.68K b/VARS_EQU.68K
+index 5ee3511..075848a 100644
+--- a/VARS_EQU.68K
++++ b/VARS_EQU.68K
+@@ -3,7 +3,8 @@ OUI:			EQU -1
+ NON:			EQU 0
+ 
+ HBL_ON:			EQU 1
+-Debug:          	EQU 1		; Mode Debugging On/Off
++Debug:          	EQU 0		; Mode Debugging On/Off NOTE: This was intended for use with scsi dev kit hardware, want off now - pizzapartytime
++Pizza_Debug:        EQU 1       ; My 2024 Debug Options for vector traps and Status Register - pizzapartytime
+ Time_Vbl:       	EQU 0		; Temps machine affichage On/Off
+ Editeur:		EQU 1		; Menus etc...
+ Clip_Hard:		EQU 1
+@@ -15,7 +16,7 @@ MODE_DUEL:		EQU 0
+ 
+ Tracker:		EQU 0
+ 
+-Select_Depart_Menu:	EQU 0
++Select_Depart_Menu:	EQU 1
+ 
+ CLIP_GAUCHE:   		EQU 128	 	; Clipping Gauche Personnages
+ CLIP_DROIT:		EQU 128+320   	; Clipping Droit Personnages

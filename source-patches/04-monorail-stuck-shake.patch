@@ -1,0 +1,12 @@
+diff --git a/TOTAL2.68K b/TOTAL2.68K
+index f2ed1b3..315610d 100644
+--- a/TOTAL2.68K
++++ b/TOTAL2.68K
+@@ -23631,6 +23631,7 @@ o_pan:  dc.w 176,%0000111100000001	; 1
+ ;============================================================================
+ 
+ NewLevel:
++	clr.w	(Tremble_Mono) ; added to eliminate stuck shaking variable from monorail (pizzapartytime)
+ 	move.l	#rts,Current_Vbl
+ 
+ 	moveq	#2-1,d4
