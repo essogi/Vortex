@@ -1,8 +1,8 @@
-# Out of the Vortex: bug fixes and toolchain restoration
+# Out of the Vortex: bug fixes and build toolchain
 
 *Out of the Vortex* is an unreleased 1995 Sega Mega Drive brawler by Cryo
 Interactive, based on the Dark Horse comic, cancelled at roughly 95%
-complete. This repository holds my work on it: a restored build toolchain
+complete. This repository holds my work on it: a build toolchain
 and a set of source patches that fix crashes and gameplay bugs, all against
 the Hidden Palace source release.
 
